@@ -16,8 +16,8 @@ class Name(Field):
 class Phone(Field):
      # реалізація класу
     def __init__(self, value):
-        if not value.isdigit() or len(value) != 10 or value[0] == '0': 
-            raise ValueError("Phone number must be at least 10 digits and contain only numbers and first digit cannot be 0.")
+        if not value.isdigit() or len(value) != 10 : 
+            raise ValueError("Phone number must be at least 10 digits and contain only numbers.")
         else:
             self.value = value
 
@@ -39,15 +39,17 @@ class Record:
 
 
     def edit_phone(self, old_phone, new_phone):
-        if self.find_phone(old_phone):
+        if self.find_phone(old_phone) is None:
+            raise ValueError("Old phone number not found.")
+        else:
             if self.add_phone(new_phone):
                 self.remove_phone(old_phone)
 
-
     def edit_email(self, old_email, new_email):  
-        if old_email in self.emails:
-            self.emails.remove(old_email)
-            self.emails.append(new_email)  
+        if self.find_email(old_email):
+            if self.add_email(new_email): 
+                self.remove_email(old_email) 
+
 
     def remove_email(self, email):
         if email in self.emails:
@@ -75,7 +77,7 @@ class Record:
     # реалізація класу
 
     def __str__(self):
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, emails: {'; '.join(self.emails)}"
+        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, emails: {self.emails}"
 
 class AddressBook(UserDict):
     # реалізація класу
@@ -93,7 +95,7 @@ class AddressBook(UserDict):
         return self.data.get(name)  
     
     def __str__(self):
-        return f"Record name: {'; '.join(self.data.keys())}, contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, emails: {'; '.join(self.emails)}"
+        return f"Record name: {'; '.join(self.data.keys())}, contact name: {self.get.name}, phones: {'; '.join(p.value for p in self.get.phones)}, emails: {(self.get.emails)}"
 
 # book = AddressBook()
 
@@ -111,18 +113,19 @@ class AddressBook(UserDict):
 # book.add_record(jane_record)
 
 # # Виведення всіх записів у книзі
-     
+
 # print(book)
 
-    # # Знаходження та редагування телефону для John
-    # john = book.find("John")
-    # john.edit_phone("1234567890", "1112223333")
+# # Знаходження та редагування телефону для John
+# john = book.find("John")
+# john.edit_phone("1234567890", "1112223333")
 
-    # print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
+# print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
 
-    # # Пошук конкретного телефону у записі John
-    # found_phone = john.find_phone("5555555555")
-    # print(f"{john.name}: {found_phone}")  # Виведення: John: 5555555555
+# # Пошук конкретного телефону у записі John
+# found_phone = john.find_phone("5555555555")
+# print(f"{john.name}: {found_phone}")  # Виведення: John: 5555555555
 
-    # # Видалення запису Jane
-    # book.delete("Jane")
+# # Видалення запису Jane
+# book.delete("Jane")
+# print(book)  # Виведення всіх записів у книзі після видалення Jane
