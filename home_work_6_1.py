@@ -42,7 +42,8 @@ class Record:
         if self.find_phone(old_phone) is None:
             raise ValueError("Old phone number not found.")
         else:
-            if self.add_phone(new_phone):
+            self.add_phone(new_phone)
+            if self.find_phone(new_phone):
                 self.remove_phone(old_phone)
 
     def edit_email(self, old_email, new_email):  
@@ -95,37 +96,42 @@ class AddressBook(UserDict):
         return self.data.get(name)  
     
     def __str__(self):
-        return f"Record name: {'; '.join(self.data.keys())}, contact name: {self.get.name}, phones: {'; '.join(p.value for p in self.get.phones)}, emails: {(self.get.emails)}"
+        return f"Record name: {'; '.join(self.data.keys())},\
+{'; '.join(f'contact name: {str(Record.name.value)},\
+phones: {", ".join(str(phone.value) for phone in Record.phones )},\
+emails: {str(Record.emails)}' for Record in self.data.values())}" 
+    
+# Приклад використання класів
 
-# book = AddressBook()
+book = AddressBook()
 
-# # Створення запису для John
-# john_record = Record("John")
-# john_record.add_phone("1234567890")
-# john_record.add_phone("5555555555")
+# Створення запису для John
+john_record = Record("John")
+john_record.add_phone("1234567890")
+john_record.add_phone("5555555555")
 
-# # Додавання запису John до адресної книги
-# book.add_record(john_record)
+# Додавання запису John до адресної книги
+book.add_record(john_record)
 
-# # Створення та додавання нового запису для Jane
-# jane_record = Record("Jane")
-# jane_record.add_phone("9876543210")
-# book.add_record(jane_record)
+# Створення та додавання нового запису для Jane
+jane_record = Record("Jane")
+jane_record.add_phone("9876543210")
+book.add_record(jane_record)
 
-# # Виведення всіх записів у книзі
+# Виведення всіх записів у книзі
 
-# print(book)
+print(book)
 
-# # Знаходження та редагування телефону для John
-# john = book.find("John")
-# john.edit_phone("1234567890", "1112223333")
+# Знаходження та редагування телефону для John
+john = book.find("John")
+john.edit_phone("1234567890", "1112223333")
 
-# print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
+print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
 
-# # Пошук конкретного телефону у записі John
-# found_phone = john.find_phone("5555555555")
-# print(f"{john.name}: {found_phone}")  # Виведення: John: 5555555555
+# Пошук конкретного телефону у записі John
+found_phone = john.find_phone("5555555555")
+print(f"{john.name}: {found_phone}")  # Виведення: John: 5555555555
 
-# # Видалення запису Jane
-# book.delete("Jane")
-# print(book)  # Виведення всіх записів у книзі після видалення Jane
+# Видалення запису Jane
+book.delete("Jane")
+print(book)  # Виведення всіх записів у книзі після видалення Jane
