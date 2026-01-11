@@ -43,13 +43,13 @@ class Record:
             raise ValueError("Old phone number not found.")
         else:
             self.add_phone(new_phone)
-            if self.find_phone(new_phone):
-                self.remove_phone(old_phone)
+            self.find_phone(new_phone)
+            self.remove_phone(old_phone)
 
     def edit_email(self, old_email, new_email):  
         if self.find_email(old_email):
-            if self.add_email(new_email): 
-                self.remove_email(old_email) 
+            self.add_email(new_email)
+            self.remove_email(old_email) 
 
 
     def remove_email(self, email):
