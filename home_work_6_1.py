@@ -42,8 +42,7 @@ class Record:
         if self.find_phone(old_phone) is None:
             raise ValueError("Old phone number not found.")
         else:
-            self.add_phone(new_phone)
-            self.find_phone(new_phone)
+            self.add_phone(new_phone)            
             self.remove_phone(old_phone)
 
     def edit_email(self, old_email, new_email):  
